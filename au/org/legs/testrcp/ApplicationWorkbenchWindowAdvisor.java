@@ -138,7 +138,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 		final Tray tray = window.getShell().getDisplay().getSystemTray();
 		TrayItem trayItem = new TrayItem(tray, SWT.NONE);
 		Image trayImage = AbstractUIPlugin.imageDescriptorFromPlugin(
-				"au.org.legs.TestRcp", "/icons/alt_about.gif")
+				"au.org.legs.TestRcp", "/images/smiley_tray.png")
 				.createImage();
 		trayItem.setImage(trayImage);
 		trayItem.setToolTipText("Test RCP Application");
