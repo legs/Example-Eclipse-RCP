@@ -15,19 +15,26 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.part.ViewPart;
 
 import au.org.legs.testrcp.customer.Person;
 
 public class DefaultViewPart extends ViewPart {
 	
+	public static final String ID = "au.org.legs.testrcp.DefaultView";
+	
 	private ComboViewer viewer;
 	private Text lastNameText;
+	private Text descriptionText;
 	
 	private Person[] persons = new Person[] {
 			new Person("", ""),
@@ -87,7 +94,7 @@ public class DefaultViewPart extends ViewPart {
 		// the selected person
 		Label descriptionLabel = new Label(parent, SWT.NONE);
 		descriptionLabel.setText("Description:");
-		Text descriptionText = new Text(parent, SWT.BORDER);
+		descriptionText = new Text(parent, SWT.BORDER);
 		GridData data = new GridData(GridData.FILL_HORIZONTAL);
 		descriptionText.setLayoutData(data);
 		
@@ -117,6 +124,24 @@ public class DefaultViewPart extends ViewPart {
 					"ParseException attempting to create content proposals: " + 
 					pe.toString());
 		}
+		
+		// Create a button that will fill the status line out with
+		// the name and description of the selected customer
+		Button setStatusLine = new Button(parent, SWT.PUSH);
+		setStatusLine.setText("Set status line to customer info");
+
+		setStatusLine.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {				
+				Person customer = (Person) ((StructuredSelection) 
+						viewer.getSelection()).getFirstElement();
+				IActionBars bars = getViewSite().getActionBars();
+				bars.getStatusLineManager().setMessage(
+						customer.getFirstName() + " " +
+						customer.getLastName() + ": " +
+						descriptionText.getText());
+			}
+		});
+
 	}
 
 	@Override

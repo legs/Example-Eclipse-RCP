@@ -4,6 +4,7 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.NotEnabledException;
 import org.eclipse.core.commands.NotHandledException;
 import org.eclipse.core.commands.common.NotDefinedException;
+import org.eclipse.jface.action.IStatusLineManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ShellAdapter;
 import org.eclipse.swt.events.ShellEvent;
@@ -43,8 +44,9 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
         IWorkbenchWindowConfigurer configurer = getWindowConfigurer();
         configurer.setInitialSize(new Point(400, 300));
         configurer.setShowCoolBar(false);
-        configurer.setShowStatusLine(false);
-        configurer.setTitle("Test RCP Application"); //$NON-NLS-1$
+        configurer.setTitle("Test RCP Application");
+        configurer.setShowStatusLine(true);
+        configurer.setShowPerspectiveBar(true);
     }
     
 	@Override
@@ -59,6 +61,10 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 			// Create exit and about action on the icon
 			addTrayPopupMenuListener();
 		}
+		
+		IStatusLineManager statusline = getWindowConfigurer()
+			.getActionBarConfigurer().getStatusLineManager();
+		statusline.setMessage(null, "Status of application - okay.");
 	}
 	
 	// Add listeners to the shell and trayItem which control
